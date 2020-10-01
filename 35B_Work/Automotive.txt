@@ -1,0 +1,23 @@
+Ford Wagon ZTW
+5
+18445
+Color
+10
+Fort Knox Gold Clearcoat Metallic, Liquid Grey Clearcoat Metallic, Infra-Red Clearcoat, Grabber Green Clearcoat Metallic, Sangria Red Clearcoat Metallic, French Blue Clearcoat Metallic, Twilight Blue Clearcoat Metallic, CD Silver Clearcoat Metallic, Pitch Black Clearcoat, Cloud 9 White Clearcoat
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Transmission
+2
+Automatic, Manual
+0, -815
+Brakes
+3
+Standard, ABS, ABS Adv
+0, 400, 1625
+Side Impact Air Bags
+2
+No, Yes
+0, 350
+Moonroof
+2
+No, Yes
+0, 595

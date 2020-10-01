@@ -34,17 +34,17 @@ public class FileIO {
 				numStringTemp = br.readLine();
 				basePrice = Float.parseFloat(numStringTemp);// third line is baseprice
 				System.out.println("$" + basePrice);
-				Automotive auto = new Automotive(autoName, basePrice); // create Automotive object with name and
-																		// baseprice
+				Automotive auto = new Automotive(autoName, basePrice, numOptSet); // create Automotive object with name and
+																	   // baseprice
 				for (int i = 0; i < numOptSet; i++) {
 					optSetName = br.readLine(); // Name of current option set
 					System.out.println(optSetName);
 //					br.readLine();
-					numStringTemp = br.readLine();
-					numOpt = Integer.parseInt(numStringTemp); // number of options in this set
-					System.out.println(numOpt);
+//					numStringTemp = br.readLine();
+//					numOpt = Integer.parseInt(numStringTemp); // number of options in this set
+//					System.out.println(numOpt);
 //					br.readLine();
-//					OptionSet optSet = new OptionSet(optSetName, numOpt); // create an optionset with above parameters.
+					OptionSet optSet = new OptionSet(optSetName); // create an optionset with above parameters.
 																			// Using constructors is not explicitly
 																			// forbidden according to instructions
 
@@ -52,16 +52,16 @@ public class FileIO {
 					String[] strArr = allOpt.split(", "); // create an array to hold all separate option names
 					String prices = br.readLine(); // read all prices into a string
 					String[] priceArr = prices.split(", "); // create a string array of int prices
-					int[] intArr = new int[numOpt];
-					for (int j = 0; j < numOpt; j++) {
+					int[] intArr = new int[priceArr.length];
+					for (int j = 0; j < intArr.length; j++) {
 						intArr[j] = Integer.parseInt(priceArr[j]); // parse the integers from a string arr to int arr
 					}
-					for (int k = 0; k < numOpt; k++) { // create options objects and add to optionset
+					for (int k = 0; k < intArr.length; k++) { // create options objects and add to optionset
 						OptionSet.Option opt = new OptionSet.Option(strArr[k], intArr[k]); // create new option
 						auto.addOption(optSet, opt); // add option to option[]
 						System.out.println("Added option: " + opt.toString());
 					}
-					auto.addOptSet(optSet);
+					auto.addOptSet(auto, optSet);
 					System.out.println("Added Option Set: " + optSet.toString());
 				}
 

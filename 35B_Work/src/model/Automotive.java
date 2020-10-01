@@ -15,12 +15,16 @@ public class Automotive extends OptionSet{
 	private String name;
 	private float price, basePrice, totalPrice; // basePrice does not change
 	private OptionSet[] optSet;
+	private int count;
 //	private float totalPrice;
 	
 	/* Constructors */
 	// Default
 	public Automotive() {
-		this("Name unknown", new OptionSet[1], 0);
+		this.name = "automotive name";
+		this.basePrice = 0;
+		this.optSet = new OptionSet[1];
+		this.count = 0;
 	}
 	
 	// Construct an Object
@@ -65,6 +69,16 @@ public class Automotive extends OptionSet{
 		this.name = name;
 		this.optSet = optSet;
 		this.totalPrice = totalPrice;
+	}
+	
+	public Automotive(String name, float basePrice, int size) {
+		this.name = name;
+		this.basePrice = basePrice;
+		this.optSet = new OptionSet[size];
+		for (int i = 0; i < size; i++) {
+			optSet[i] = new OptionSet();
+			count++;
+		}
 	}
 	
 	/* 'Model' Methods */
@@ -118,13 +132,15 @@ public class Automotive extends OptionSet{
 		return -1;
 	}
 	
-	public void addOptSet(OptionSet addOptSet) {
-		OptionSet[] temp = new OptionSet[optSet.length + 1];
-		for (int i = 0; i < optSet.length; i++) {
-			temp[i] = optSet[i];
-		}
-		temp[temp.length - 1] = addOptSet; // add new optSet at end of temp array
-		optSet = temp; // copy temp back into member variable
+	public void addOptSet(Automotive a, OptionSet addOptSet) {
+		
+		
+//		OptionSet[] temp = new OptionSet[optSet.length + 1];
+//		for (int i = 0; i < optSet.length; i++) {
+//			temp[i] = optSet[i];
+//		}
+//		temp[temp.length - 1] = addOptSet; // add new optSet at end of temp array
+//		optSet = temp; // copy temp back into member variable
 	}
 	
 	public void addOption(OptionSet oS, Option o) {
@@ -155,6 +171,5 @@ public class Automotive extends OptionSet{
 		}
 		return str.toString();
 	}
-	
 	
 }

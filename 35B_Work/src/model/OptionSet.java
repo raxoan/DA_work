@@ -8,6 +8,13 @@
 package model;
 
 public class OptionSet {
+	
+	public static void main(String[] args) {
+		OptionSet arrThing = new OptionSet("Poop array", 4); // testing purposes
+		Option thing = new Option("Poop", 25);
+		arrThing.addOption(thing);
+		System.out.println(arrThing.toString());
+	}
 
 	/* Inner Class */
 	public static class Option {
@@ -18,7 +25,8 @@ public class OptionSet {
 
 		/* Constructors */
 		Option() {
-			this("name unknown", 0);
+			name = "Default name";
+			price = -69;
 		}
 
 		Option(String name) {
@@ -82,6 +90,7 @@ public class OptionSet {
 	/* Member Variables */
 	private String name;
 	private Option[] opt;
+	private int count;
 	private float price, optPrices;
 
 	/* Constructors */
@@ -89,6 +98,7 @@ public class OptionSet {
 	public OptionSet() {
 		this.opt = new Option[1];
 		this.name = "Name unknown";
+		this.count = 0;
 //		this.optPrices = 0;
 	}
 
@@ -102,7 +112,7 @@ public class OptionSet {
 		this("Name unknown", opt);
 	}
 
-	OptionSet(String name) {
+	public OptionSet(String name) {
 		this(name, new Option[1]);
 	}
 	
@@ -138,6 +148,10 @@ public class OptionSet {
 	public OptionSet(String name, int num) {
 		this.name = name;
 		this.opt = new Option[num];
+		for (int i = 0; i < num; i++) {
+			opt[i] = new Option();
+			count++;
+		}
 	}
 
 	/* Getter Methods */
@@ -183,20 +197,15 @@ public class OptionSet {
 		opt = temp;
 	}
 	protected void addOption(Option addOpt) {
-		for (int i = 0; i < opt.length; i++) { // check to see if there is any available space in current optset[]
-			if (opt[i] == null) {
-				opt[i] = addOpt;
-				i = opt.length; // end loop because an option was added
-			} else { // when there's no more room in the array
-				Option[] temp = new Option[opt.length + 1]; // create a temp array for adding new option
-				for (int j = 0; j < opt.length; i++) { // copy current opt[] into temp
-					temp[j] = opt[j];
-				}
-				temp[temp.length - 1] = addOpt; // add newest option to the end of temp[]
-				opt = temp; // copy temp array into member variable;
+		if (count + 1 >= opt.length) {
+			Option[] tempOpt = new Option[opt.length * 2];
+			for (int j = 0; j < count; j++) {
+				tempOpt[j] = opt[j];
 			}
-				
-			}
+			opt = tempOpt;
+		}
+		opt[count+1] = addOpt;
+		count++;
 	}
 
 //	protected void addOption(Option addOpt) {
@@ -227,11 +236,11 @@ public class OptionSet {
 //		}
 	
 
-	protected void deleteOption(Option delOpt) {
-		int find = findOption(delOpt);
-		if (find != -1) {
+	protected void deleteOption(int pos) { // delete based on index pos provided
+//		int find = findOption(delOpt);
+		if (pos != -1) {
 			Option[] temp = new Option[opt.length - 1]; // create copy of opt[] that is 1 unit smaller
-			for (int i = find; i < opt.length; i++) { // starting at the index at which the delOpt is found
+			for (int i = pos; i < opt.length; i++) { // starting at the index at which the option is found
 				opt[i] = opt[i + 1]; // simple removal by copying in the next object in the array
 			}
 			for (int j = 0; j < temp.length; j++) {
@@ -239,8 +248,21 @@ public class OptionSet {
 			}
 			opt = temp; // replace the old opt array with the clean version
 		} else {
-			System.out.println("Error: Option '" + delOpt.getName() + "' could not be found.");
+			throw new IndexOutOfBoundsException();
 		}
+	}
+	
+	
+	/*
+	 * deleteAllOther();
+	 * @Param Option o; the option in an optionset that the user wants to keep over other options
+	 * creates a temp option[] of size 1 with the @param as the only option in the array
+	 * replaces the opt in the class with temp.
+	 */
+	protected void deleteAllOther(Option o) {
+		Option[] temp = new Option[1];
+		temp[0] = opt[findOption(o)];
+		opt = temp;
 	}
 
 	protected void updateOption(Option update, int pos) {
@@ -252,9 +274,10 @@ public class OptionSet {
 	public String toString() {
 		StringBuffer str = new StringBuffer("Option Array Name: " + name);
 		for (int i = 0; i < opt.length; i++) {
-			str.append("/n " + opt[i].toString()); // append all options to stringbuffer
+			if (opt[i] != null) {
+				str.append("\n" + opt[i].toString()); // append all options to stringbuffer
+			}
 		}
-
 		return str.toString();
 	}
 

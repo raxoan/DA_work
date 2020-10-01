@@ -44,7 +44,7 @@ public class FileIO {
 					numOpt = Integer.parseInt(numStringTemp); // number of options in this set
 					System.out.println(numOpt);
 //					br.readLine();
-					OptionSet optSet = new OptionSet(optSetName, numOpt); // create an optionset with above parameters.
+//					OptionSet optSet = new OptionSet(optSetName, numOpt); // create an optionset with above parameters.
 																			// Using constructors is not explicitly
 																			// forbidden according to instructions
 
@@ -56,16 +56,14 @@ public class FileIO {
 					for (int j = 0; j < numOpt; j++) {
 						intArr[j] = Integer.parseInt(priceArr[j]); // parse the integers from a string arr to int arr
 					}
-//					System.out.println(intArr.length);
 					for (int k = 0; k < numOpt; k++) { // create options objects and add to optionset
 						OptionSet.Option opt = new OptionSet.Option(strArr[k], intArr[k]); // create new option
 						auto.addOption(optSet, opt); // add option to option[]
 						System.out.println("Added option: " + opt.toString());
 					}
 					auto.addOptSet(optSet);
-					System.out.println(optSet.toString());
+					System.out.println("Added Option Set: " + optSet.toString());
 				}
-//				System.out.println
 
 			} while ((thisLine = br.readLine()) != null);
 			

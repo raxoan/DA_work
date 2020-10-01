@@ -57,7 +57,8 @@ public class OptionSet {
 		/* Overridden Methods */
 		@Override
 		public String toString() {
-			StringBuffer str = new StringBuffer("Option: " + name + "\nPrice: $" + price);
+			String priceF = String.format("%.2f", price); 
+			StringBuffer str = new StringBuffer("Option: " + name + "\nPrice: $" + priceF);
 			return str.toString();
 		}
 

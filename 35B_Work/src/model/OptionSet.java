@@ -204,7 +204,7 @@ public class OptionSet {
 			}
 			opt = tempOpt;
 		}
-		opt[count+1] = addOpt;
+		opt[count] = addOpt;
 		count++;
 	}
 
@@ -273,11 +273,11 @@ public class OptionSet {
 	@Override
 	public String toString() {
 		StringBuffer str = new StringBuffer("Option Array Name: " + name);
-		for (int i = 0; i < opt.length; i++) {
-			if (opt[i] != null) {
-				str.append("\n" + opt[i].toString()); // append all options to stringbuffer
-			}
-		}
+//		for (int i = 0; i < opt.length; i++) {
+//			if (opt[i] != null) {
+//				str.append("\n" + opt[i].getName()); // append all options to stringbuffer
+//			}
+//		}
 		return str.toString();
 	}
 

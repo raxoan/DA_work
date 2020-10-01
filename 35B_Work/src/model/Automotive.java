@@ -29,7 +29,10 @@ public class Automotive extends OptionSet{
 	
 	// Construct an Object
 	public Automotive(String name, float price) {
-		super(name, price);
+		this.name = name;
+		basePrice = price;
+		this.optSet = new OptionSet[1];
+		this.count = 0;
 	}
 	
 	// Construct an ObjectSet
@@ -132,7 +135,17 @@ public class Automotive extends OptionSet{
 		return -1;
 	}
 	
-	public void addOptSet(Automotive a, OptionSet addOptSet) {
+	public void addOptSet(OptionSet addOptSet) {
+		if (count + 1 >= optSet.length) {
+			OptionSet[] temp = new OptionSet[optSet.length * 2];
+			for (int i = 0; i < count; i++) {
+				temp[i] = optSet[i];
+			}
+			optSet = temp;
+		}
+		optSet[count] = addOptSet;
+		count++;
+	}
 		
 		
 //		OptionSet[] temp = new OptionSet[optSet.length + 1];
@@ -141,7 +154,7 @@ public class Automotive extends OptionSet{
 //		}
 //		temp[temp.length - 1] = addOptSet; // add new optSet at end of temp array
 //		optSet = temp; // copy temp back into member variable
-	}
+	
 	
 	public void addOption(OptionSet oS, Option o) {
 		oS.addOption(o);
@@ -166,8 +179,8 @@ public class Automotive extends OptionSet{
 	/* Overridden Methods */
 	@Override public String toString() {
 		StringBuffer str = new StringBuffer("Automotive Name: " + name);
-		for (int i = 0; i < optSet.length; i++) {
-			str.append("\n" + optSet[i].toString());
+		for (int i = 0; i < count; i++) {
+			str.append("\n" + optSet[i].getName());
 		}
 		return str.toString();
 	}

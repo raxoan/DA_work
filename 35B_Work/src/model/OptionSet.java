@@ -7,17 +7,20 @@
 
 package model;
 
-public class OptionSet {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class OptionSet implements Serializable{
 	
-	public static void main(String[] args) {
-		OptionSet arrThing = new OptionSet("Poop array", 4); // testing purposes
-		Option thing = new Option("Poop", 25);
-		arrThing.addOption(thing);
-		System.out.println(arrThing.toString());
-	}
+//	public static void main(String[] args) {
+//		OptionSet arrThing = new OptionSet("Poop array", 4); // testing purposes
+//		Option thing = new Option("Poop", 25);
+//		arrThing.addOption(thing);
+//		System.out.println(arrThing.toString());
+//	}
 
 	/* Inner Class */
-	public static class Option {
+	public static class Option implements Serializable {
 
 		/* Member Variables */
 		private String name;
@@ -66,7 +69,7 @@ public class OptionSet {
 		@Override
 		public String toString() {
 			String priceF = String.format("%.2f", price); 
-			StringBuffer str = new StringBuffer("Option: " + name + "\nPrice: $" + priceF);
+			StringBuffer str = new StringBuffer(name + " | Price: $" + priceF);
 			return str.toString();
 		}
 
@@ -121,23 +124,6 @@ public class OptionSet {
 		super();
 	}
 	
-//	OptionSet(float optPrices) {
-//		this("Name Unknown", new Option[1], optPrices);
-//	}
-
-//	// Two Parameters
-//	OptionSet(String name, Option[] opt) {
-//		this(name, opt, 0);
-//	}
-//	
-//	public OptionSet(String name, float optPrices) {
-//		this(name, new Option[1], optPrices);
-//	}
-//	
-//	OptionSet(Option[] opt, float optPrices) {
-//		this("Name unknown", opt, optPrices);
-//	}
-	
 	// Two parameters
 	OptionSet(String name, Option[] opt) {
 		this.opt = opt;
@@ -162,10 +148,16 @@ public class OptionSet {
 	protected String getName() {
 		return name;
 	}
+	
 
-//	protected float getPrices() {
-//		return optPrices;
-//	}
+	protected float getPrices() {
+		// TODO Auto-generated method stub
+		return price;
+	}
+
+	protected int getCount() {
+		return count;
+	}
 
 	/* Setter Methods */
 	protected void setName(String name) {
@@ -255,13 +247,13 @@ public class OptionSet {
 	
 	/*
 	 * deleteAllOther();
-	 * @Param Option o; the option in an optionset that the user wants to keep over other options
+	 * @Param int pos; the pos in an optionset that the user wants to keep over other options
 	 * creates a temp option[] of size 1 with the @param as the only option in the array
 	 * replaces the opt in the class with temp.
 	 */
-	protected void deleteAllOther(Option o) {
+	protected void deleteAllOther(int pos) {
 		Option[] temp = new Option[1];
-		temp[0] = opt[findOption(o)];
+		temp[0] = opt[pos];
 		opt = temp;
 	}
 
@@ -272,12 +264,7 @@ public class OptionSet {
 	/* Overridden Methods */
 	@Override
 	public String toString() {
-		StringBuffer str = new StringBuffer("Option Array Name: " + name);
-//		for (int i = 0; i < opt.length; i++) {
-//			if (opt[i] != null) {
-//				str.append("\n" + opt[i].getName()); // append all options to stringbuffer
-//			}
-//		}
+		StringBuffer str = new StringBuffer(name);
 		return str.toString();
 	}
 
@@ -291,11 +278,6 @@ public class OptionSet {
 			OptionSet os = (OptionSet) o;
 			return this.opt.equals(os.opt) && this.name.equals(os.name);
 		}
-	}
-
-	protected float getPrices() {
-		// TODO Auto-generated method stub
-		return price;
 	}
 
 }

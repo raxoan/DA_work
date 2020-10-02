@@ -7,15 +7,16 @@
 
 package model;
 
-import util.*;
+import java.io.Serializable;
 
-public class Automotive extends OptionSet{
+@SuppressWarnings("serial")
+public class Automotive extends OptionSet implements Serializable{
 
 	/* Member Variables */
 	private String name;
-	private float price, basePrice, totalPrice; // basePrice does not change
+	private float basePrice, totalPrice; // basePrice does not change
 	private OptionSet[] optSet;
-	private int count;
+	private int count; // number of non-null optSets in array
 //	private float totalPrice;
 	
 	/* Constructors */
@@ -100,6 +101,10 @@ public class Automotive extends OptionSet{
 		return optSet;
 	}
 	
+	public OptionSet getOptArr(int pos) {
+		return optSet[pos];
+	}
+	
 	public float getBasePrice() {
 		return basePrice;
 	}
@@ -117,7 +122,9 @@ public class Automotive extends OptionSet{
 		optSet = newOptSet;
 	}
 	
-
+	public void setBasePrice(float price) {
+		basePrice = price;
+	}
 	
 	public void setTotalPrice() {
 		for (int i = 0; i < optSet.length; i++) { 
@@ -176,13 +183,44 @@ public class Automotive extends OptionSet{
 		}
 	}
 	
+	public void deleteAllOther(OptionSet oS, int pos) {
+		oS.deleteAllOther(pos);
+	}
 	/* Overridden Methods */
 	@Override public String toString() {
-		StringBuffer str = new StringBuffer("Automotive Name: " + name);
+		String priceF = String.format("%.2f", basePrice);
+		StringBuffer str = new StringBuffer("Automotive Name: " + name + "\nPrice: $" + priceF);
 		for (int i = 0; i < count; i++) {
-			str.append("\n" + optSet[i].getName());
+			str.append("\n" + optSet[i]);
 		}
 		return str.toString();
+	}
+
+	public int getCount() {
+		// TODO Auto-generated method stub
+		return count;
+	}
+	
+	/*
+	 * Method printOptSets()
+	 * Method will print the toString() of the optionSet[] of the current Automotive Object
+	 */
+	public void printOptSets() {
+		for (int i = 0; i < count; i++) {
+			System.out.println((i + 1) + ". " + optSet[i]);
+		}
+	}
+	
+	/*
+	 * Method printOptions(pos, a)
+	 * @Param int pos; the position of the optionSet in question
+	 * Method will print all of the Options within a particular OptionSet, determined by the index position provided
+	 */
+	public void printOptions(int pos) {
+		for (int i = 0; i < optSet[pos].getCount(); i++) {
+			System.out.println((i + 1) + ". " + optSet[pos].getOptions()[i]);
+		}
+			
 	}
 	
 }

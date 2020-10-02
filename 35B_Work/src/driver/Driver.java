@@ -18,14 +18,14 @@ public class Driver {
 		System.out.println(FordZTW.toString());
 		
 		try {
-			FileOutputStream fileOut = new FileOutputStream("FordZTW.dat");
+			FileOutputStream fileOut = new FileOutputStream("FordZTW.txt");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
 			out.writeObject(FordZTW);
 			out.close();
 			fileOut.close();
 			System.out.println("\nFinished Serialization of file.\n");
 			
-			FileInputStream fileIn = new FileInputStream("FordZTW.dat");
+			FileInputStream fileIn = new FileInputStream("FordZTW.txt");
 			ObjectInputStream in = new ObjectInputStream(fileIn);
 			try {
 				Automotive newFordZTW = (Automotive) in.readObject();

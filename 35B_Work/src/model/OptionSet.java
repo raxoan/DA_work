@@ -11,13 +11,6 @@ import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class OptionSet implements Serializable{
-	
-//	public static void main(String[] args) {
-//		OptionSet arrThing = new OptionSet("Poop array", 4); // testing purposes
-//		Option thing = new Option("Poop", 25);
-//		arrThing.addOption(thing);
-//		System.out.println(arrThing.toString());
-//	}
 
 	/* Inner Class */
 	public static class Option implements Serializable {
@@ -27,16 +20,16 @@ public class OptionSet implements Serializable{
 		private float price;
 
 		/* Constructors */
-		Option() {
+		public Option() {
 			name = "Default name";
-			price = -69;
+			price = 0;
 		}
 
-		Option(String name) {
+		public Option(String name) {
 			this(name, 0);
 		}
 
-		Option(float price) {
+		public Option(float price) {
 			this("name unknown", price);
 		}
 
@@ -62,8 +55,6 @@ public class OptionSet implements Serializable{
 		protected void setPrice(float price) {
 			this.price = price;
 		}
-
-		/* Instance methods */
 
 		/* Overridden Methods */
 		@Override
@@ -94,7 +85,7 @@ public class OptionSet implements Serializable{
 	private String name;
 	private Option[] opt;
 	private int count;
-	private float price, optPrices;
+	private float price;
 
 	/* Constructors */
 	// Default
@@ -105,13 +96,13 @@ public class OptionSet implements Serializable{
 //		this.optPrices = 0;
 	}
 
-	// Construct an Object
+	// Construct an Object by calling the parent constructor
 	public OptionSet(String name, float price) {
 		this(new Option(name, price));
 	}
 	
 	// One parameter
-	OptionSet(Option[] opt) {
+	public OptionSet(Option[] opt) {
 		this("Name unknown", opt);
 	}
 
@@ -120,7 +111,7 @@ public class OptionSet implements Serializable{
 	}
 	
 	// Super constructor
-	OptionSet(Option o) {
+	public OptionSet(Option o) {
 		super();
 	}
 	
@@ -128,15 +119,15 @@ public class OptionSet implements Serializable{
 	OptionSet(String name, Option[] opt) {
 		this.opt = opt;
 		this.name = name;
-//		this.optPrices = optPrices;
 	}
 	
+	// Creates an optionset of size num with name
 	public OptionSet(String name, int num) {
 		this.name = name;
 		this.opt = new Option[num];
 		for (int i = 0; i < num; i++) {
 			opt[i] = new Option();
-			count++;
+//			count++;
 		}
 	}
 
@@ -151,7 +142,6 @@ public class OptionSet implements Serializable{
 	
 
 	protected float getPrices() {
-		// TODO Auto-generated method stub
 		return price;
 	}
 
@@ -163,15 +153,24 @@ public class OptionSet implements Serializable{
 	protected void setName(String name) {
 		this.name = name;
 	}
-
-	protected void setTotalPrice() {
-		float temp = 0;
-		for (int i = 0; i < opt.length; i++) {
-			temp += opt[i].getPrice();
-		}
-		optPrices = temp;
+	
+	protected void setOpt(Option[] opt) {
+		this.opt = opt;
 	}
 	
+	protected void setCount(int count) {
+		this.count = count;
+	}
+	
+	protected void setPrice(float price) {
+		this.price = price;
+	}
+	
+	protected void setFinalOption(int pos) { // select single option, remove all other options from list
+		Option[] temp = new Option[1];
+		temp[1] = opt[pos];
+		opt = temp;
+	}
 	
 	/* Instance methods */
 	protected int findOption(Option opt) {
@@ -183,11 +182,7 @@ public class OptionSet implements Serializable{
 		return -1; // return -1 if not found
 	}
 	
-	protected void setFinalOption(int pos) { // select single option, remove all other options from list
-		Option[] temp = new Option[1];
-		temp[1] = opt[pos];
-		opt = temp;
-	}
+	
 	protected void addOption(Option addOpt) {
 		if (count + 1 >= opt.length) {
 			Option[] tempOpt = new Option[opt.length * 2];
@@ -200,36 +195,13 @@ public class OptionSet implements Serializable{
 		count++;
 	}
 
-//	protected void addOption(Option addOpt) {
-//		for (int i = 0; i < opt.length; i++) { // check to see if there is any available space in current optset[]
-//			if (opt[i] == null) {
-//				opt[i] = addOpt;
-//				i = opt.length; // end loop because an option was added
-//			} else { // when there's no more room in the array
-//				Option[] temp = new Option[opt.length + 1]; // create a temp array for adding new option
-//				for (int j = 0; j < opt.length; i++) { // copy current opt[] into temp
-//					temp[j] = opt[j];
-//				}
-//				temp[temp.length - 1] = addOpt; // add newest option to the end of temp[]
-//				opt = temp; // copy temp array into member variable;
-//			}
-//				
-//			}
-//	}
-//		if (opt.length == 1) {
-//			opt[1] = addOpt;
-//		} else {
-//			Option[] temp = new Option[opt.length + 1]; // create a temp array for adding new option
-//			for (int i = 0; i < opt.length; i++) { // copy current opt[] into temp
-//				temp[i] = opt[i];
-//			}
-//			temp[temp.length - 1] = addOpt; // add newest option to the end of temp[]
-//			opt = temp; // copy temp array into member variable;
-//		}
-	
-
+	/*
+	 * Method deleteOption();
+	 * Pre-requisite: findOption() method to return an int value, the index position of an Option in an array;
+	 * @Param int pos;
+	 * 
+	 */
 	protected void deleteOption(int pos) { // delete based on index pos provided
-//		int find = findOption(delOpt);
 		if (pos != -1) {
 			Option[] temp = new Option[opt.length - 1]; // create copy of opt[] that is 1 unit smaller
 			for (int i = pos; i < opt.length; i++) { // starting at the index at which the option is found
@@ -257,10 +229,17 @@ public class OptionSet implements Serializable{
 		opt = temp;
 	}
 
+	/*
+	 * Method: updateOption();
+	 * @Param Option update; an instance of the Option class
+	 * @Param int pos; the position within the Option[] array where the param option will go
+	 */
+	
 	protected void updateOption(Option update, int pos) {
 		opt[pos] = update; // reassign the object at index pos to new update option
 	}
 
+	
 	/* Overridden Methods */
 	@Override
 	public String toString() {

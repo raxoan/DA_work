@@ -10,8 +10,6 @@ import java.io.*;
 import model.*;
 
 public class FileIO {
-
-
 	/*
 	 * using entire automotive class, build an auto object with specified options
 	 * selected (one color, one transmission, etc)
@@ -32,18 +30,13 @@ public class FileIO {
 			// while there are still lines in the text
 			autoName = br.readLine(); // first line is autoname
 			auto.setName(autoName);
-//			System.out.println(autoName);
 			String numStringTemp;
 			numStringTemp = br.readLine();
 			basePrice = Float.parseFloat(numStringTemp);// next line is baseprice
 			auto.setBasePrice(basePrice);
-//			System.out.println("$" + basePrice);
-			
-//			Automotive auto = new Automotive(autoName, basePrice); // create Automotive object with name and
-																	// baseprice
+
 			do { // do-while loop to create and add option & optionSets
 				optSetName = br.readLine(); // Name of current option set
-//				System.out.println(optSetName);
 				OptionSet optSet = new OptionSet(optSetName); // create an optionset with above parameters.
 																// Using constructors is not explicitly
 																// forbidden according to instructions
@@ -59,15 +52,11 @@ public class FileIO {
 				for (int k = 0; k < intArr.length; k++) { // create options objects and add to optionset
 					OptionSet.Option opt = new OptionSet.Option(strArr[k], intArr[k]); // create new option
 					auto.addOption(optSet, opt); // add option to option[]
-//					System.out.println("Added option: " + opt.toString());
 				}
 				auto.addOptSet(optSet);
-//				System.out.println("Added Option Set: " + optSet.toString());
 			} while (br.ready());
 			br.close();
-//			System.out.println("Finished creating Automotive: " + auto.toString());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return auto;

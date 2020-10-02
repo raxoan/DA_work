@@ -62,7 +62,7 @@ public class Automotive extends OptionSet implements Serializable{
 	}
 	
 	// Three parameters
-	Automotive(String name, OptionSet[] optSet, float price) {
+	public Automotive(String name, OptionSet[] optSet, float price) {
 		this.name = name;
 		this.optSet = optSet;
 		this.basePrice = price;

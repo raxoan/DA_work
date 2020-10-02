@@ -24,7 +24,6 @@ public class Driver {
 			out.close();
 			fileOut.close();
 			System.out.println("\nFinished Serialization of file.\n");
-			
 			FileInputStream fileIn = new FileInputStream("FordZTW.txt");
 			ObjectInputStream in = new ObjectInputStream(fileIn);
 			try {
@@ -37,9 +36,6 @@ public class Driver {
 			in.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		
+		}	
 	}
-	
-	
 }

@@ -10,17 +10,21 @@ import java.util.Arrays;
 public class AList<T> implements ListInterface<T> {
 	/* Member Variables */
 	private T[] list;
-	private int numberOfEntries;
+	private int numberOfEntries; // aka 'count' variable
 	private boolean initialized = false;
 	private static final int DEFAULT_CAPACITY = 25;
 	private static final int MAX_CAPACITY = 100;
 
 	/* Constructors */
 	public AList() {
-		this(DEFAULT_CAPACITY);
+		@SuppressWarnings("unchecked")
+		T[] temp = (T[]) new Object[DEFAULT_CAPACITY]; // create a generic array at default capacity
+		list = temp;
+		numberOfEntries = 0;
+		initialized = true; // always set initialize to true when an array is created
 	}
 
-	public AList(int initialCapacity) {
+	public AList(int initialCapacity) { // creates an object at the desired input capacity
 		@SuppressWarnings("unchecked")
 		T[] temp = (T[]) new Object[initialCapacity];
 		list = temp;
@@ -28,8 +32,17 @@ public class AList<T> implements ListInterface<T> {
 		initialized = true;
 
 	}
+	
+	public AList(T[] list, int numberOfEntries) {
+		this.list = list;
+		this.numberOfEntries = numberOfEntries;
+		initialized = true;
+	}
+	
+	///////////////////////
 	/* Inherited Methods */
-
+	///////////////////////
+	
 	/**
 	 * Adds a new entry to the end of this list. Entries currently in the list are
 	 * unaffected. The list's size is increased by 1.
@@ -37,7 +50,8 @@ public class AList<T> implements ListInterface<T> {
 	 * @param newEntry The object to be added as a new entry.
 	 */
 	public void add(T newEntry) {
-		increaseByOne(); // run method that increases list length by 1 if not at max capacity
+		checkInitialization();
+		ensureCapacity();
 		list[list.length] = newEntry; // addnew entry to end of temp list
 		numberOfEntries++; // increase number of entries in the AList
 	}
@@ -54,45 +68,140 @@ public class AList<T> implements ListInterface<T> {
 	 *                                   newPosition greater than getLength()+1.
 	 */
 	public void add(int newPosition, T newEntry) throws IndexOutOfBoundsException {
-		increaseByOne();
+		checkInitialization();
+		ensureCapacity();
 		makeRoom(newPosition);
 		list[newPosition] = newEntry;
 		numberOfEntries++; // increase number of entries in the AList
 	}
 
-//		if (newPosition < 1 || newPosition > list.length + 1) {
-//			throw new IndexOutOfBoundsException("Index out of bounds");
-//		} else { // add new entry
-//			increaseByOne(); // increase list size by 1
-//			for (int i = list.length; i > newPosition; i--) { // shift elements from the end of the list down towards
-//																// the newPosition
-//				list[i] = list[i - 1];
-//			}
-//			list[newPosition] = newEntry;
-//			numberOfEntries++; // increase number of entries in the AList
-//		}
+	/**
+	 * Removes the entry at a given position from this list. Entries originally at
+	 * positions higher than the given position are at the next lower position
+	 * within the list, and the list's size is decreased by 1.
+	 * 
+	 * @param givenPosition An integer that indicates the position of the entry to
+	 *                      be removed.
+	 * @return A reference to the removed entry.
+	 * @throws IndexOutOfBoundsException if either givenPosition less than 1, or
+	 *                                   givenPosition greater than getLength()+1.
+	 */
+	public T remove(int givenPosition) {
+		indexCheck(givenPosition);
+		T removed = list[givenPosition]; // Save the T object at the givenPosition in a temp file to return after
+											// removing it from the list
+		@SuppressWarnings("unchecked")
+		T[] temp = (T[]) new Object[list.length - 1]; // create a temp T[] that is one size smaller than list
+		removeGap(givenPosition); // remove the object at the givenPosition in the array
+		for (int i = 0; i < temp.length; i++) {
+			temp[i] = list[i]; // copy list into temp since list was adjusted in the makeRoom() method;
+			list = temp; // copy temp into list to keep new, cleaner array
+		}
+		return removed;
+	}
 
+	/** Removes all entries from this list. */
+	public void clear() {
+		for (int i = 0; i < numberOfEntries; i++) { // set all entries to null in the list
+			list[i] = null;
+		} // does not reduce the size of the list
+	}
+
+	/**
+	 * Replaces the entry at a given position in this list.
+	 * 
+	 * @param givenPosition An integer that indicates the position of the entry to
+	 *                      be replaced.
+	 * @param newEntry      The object that will replace the entry at the position
+	 *                      givenPosition.
+	 * @return The original entry that was replaced.
+	 * @throws IndexOutOfBoundsException if either givenPosition less than 1, or
+	 *                                   givenPosition greater than getLength()+1.
+	 */
+	public T replace(int givenPosition, T newEntry) {
+		indexCheck(givenPosition);
+		list[givenPosition] = newEntry;
+		return newEntry;
+	}
+
+	/**
+	 * Retrieves the entry at a given position in this list.
+	 * 
+	 * @param givenPosition An integer that indicates the position of the desired
+	 *                      entry.
+	 * @return A reference to the indicated entry.
+	 * @throws IndexOutOfBoundsException if either givenPosition less than 1, or
+	 *                                   givenPosition greater than getLength()+1.
+	 */
+	public T getEntry(int givenPosition) {
+		indexCheck(givenPosition);
+		return list[givenPosition];
+	}
+
+	/**
+	 * Sees whether this list contains a given entry.
+	 * 
+	 * @param anEntry The object that is the desired entry.
+	 * @return True if the list contains anEntry, or false if not.
+	 */
+	public boolean contains(T anEntry) {
+		for (int i = 0; i < numberOfEntries; i++) {
+			if (list[i].equals(anEntry)) {
+				return true; // if found
+			}
+		}
+		return false; // if not found
+	}
+
+	/**
+	 * Gets the length of this list.
+	 * 
+	 * @return The integer number of entries currently in the list.
+	 */
+	public int getLength() {
+		return numberOfEntries;
+	}
+
+	/**
+	 * Sees whether this list is empty.
+	 * 
+	 * @return True if the list is empty, or false if not.
+	 */
+	public boolean isEmpty() {
+		if (list[0] != null) {  //This assumes that list is always populated at the 0 index position, if it the list is not empty.
+			return false;	    //If it is possible for the index 0 position to be null, but at index 'n'
+		} else {				//there is an Object of type T, then this method no longer works; the method
+			return true;		//would have to search the entire array for any non-null objects. 
+		}
+	}
 	
-
-	///////////////////
-	/* New Methods */
-	///////////////////
+	/**
+	 * Retrieves all entries that are in this list in the order in which they occur
+	 * in the list.
+	 * 
+	 * @return A newly allocated array of all the entries in the list.
+	 */
+	public T[] toArray() {
+		@SuppressWarnings("unchecked")
+		T[] newArr = (T[]) new Object[numberOfEntries]; // creates a new array with the size being the exact number of entries in the current list
+		for (int i = 0; i < numberOfEntries; i++) {
+			newArr[i] = list[i];
+		}
+		return newArr;
+	}
+	
+	//////////////////////
+	/* Instance Methods */
+	//////////////////////
 
 	/*
-	 * Method increases the size of current T[] array by 1
-	 * 
+	 * Checks if the input index is outside the current array's boundaries.
 	 */
-	private void increaseByOne() {
-		checkInitialization();
-		checkCapacity(numberOfEntries);
-		@SuppressWarnings("unchecked")
-		T[] temp = (T[]) new Object[list.length + 1];
-		for (int i = 0; i < list.length; i++) { // Using for loop instead ofensureCapacity() method because it doubles
-												// list size instead of increasing by one.
-			temp[i] = list[i]; // copy items in current list into temp
+	private void indexCheck(int index) {
+		if (index < 1 || index > getLength() + 1) {
+			throw new IndexOutOfBoundsException(
+					"Given index is out of bounds of current number of entries in this array.");
 		}
-		list = temp; // copy temp into list; temp should have one empty space at the end of the list
-
 	}
 
 	// Throws an exception if this object is not initialized.

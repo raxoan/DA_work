@@ -4,33 +4,38 @@
  * Class Node example
  * Node.java
  */
-public class Node {
+public class Node<E> {
 	
 	/* Variables */
-	int data; // this Node stores integers as its datatype
-	Node next;
+	private E data; // this Node stores generic E as its datatype
+	private Node<E> next;
 	
 	/* Constructors */
-	Node(int d) {
+	private Node(E d) {
 		data = d;
 		next = null; // by default, when a node is created, it does not point to anything. This line isn't necessary
 	}
 	
+	private Node(E d, Node<E> n) {
+		data = d;
+		next = n;
+	}
+	
 	/* Getter Methods */
-	int getData() {
+	E getData() {
 		return data;
 	}
 	
-	Node getNextNode() {
+	Node<E> getNextNode() {
 		return next;
 	}
 	
 	/* Setter Methods */
-	void setData(int d) {
+	void setData(E d) {
 		data = d;
 	}
 	
-	void setNextNode(Node n) {
+	void setNextNode(Node<E> n) {
 		next = n;
 	}
 }

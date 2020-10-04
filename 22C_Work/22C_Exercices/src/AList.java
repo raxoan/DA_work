@@ -32,17 +32,17 @@ public class AList<T> implements ListInterface<T> {
 		initialized = true;
 
 	}
-	
+
 	public AList(T[] list, int numberOfEntries) {
 		this.list = list;
 		this.numberOfEntries = numberOfEntries;
 		initialized = true;
 	}
-	
+
 	///////////////////////
 	/* Inherited Methods */
 	///////////////////////
-	
+
 	/**
 	 * Adds a new entry to the end of this list. Entries currently in the list are
 	 * unaffected. The list's size is increased by 1.
@@ -52,7 +52,8 @@ public class AList<T> implements ListInterface<T> {
 	public void add(T newEntry) {
 		checkInitialization();
 		ensureCapacity();
-		list[list.length] = newEntry; // addnew entry to end of temp list
+		list[numberOfEntries] = newEntry; // addnew entry to end of temp list. Using index positions, the variable
+											// numberOfEntries should be at the end of the list
 		numberOfEntries++; // increase number of entries in the AList
 	}
 
@@ -70,8 +71,8 @@ public class AList<T> implements ListInterface<T> {
 	public void add(int newPosition, T newEntry) throws IndexOutOfBoundsException {
 		checkInitialization();
 		ensureCapacity();
-		makeRoom(newPosition);
-		list[newPosition] = newEntry;
+		makeRoom(newPosition - 1);
+		list[newPosition - 1] = newEntry;
 		numberOfEntries++; // increase number of entries in the AList
 	}
 
@@ -87,17 +88,22 @@ public class AList<T> implements ListInterface<T> {
 	 *                                   givenPosition greater than getLength()+1.
 	 */
 	public T remove(int givenPosition) {
-		indexCheck(givenPosition);
-		T removed = list[givenPosition]; // Save the T object at the givenPosition in a temp file to return after
-											// removing it from the list
-		@SuppressWarnings("unchecked")
-		T[] temp = (T[]) new Object[list.length - 1]; // create a temp T[] that is one size smaller than list
-		removeGap(givenPosition); // remove the object at the givenPosition in the array
-		for (int i = 0; i < temp.length; i++) {
-			temp[i] = list[i]; // copy list into temp since list was adjusted in the makeRoom() method;
+		try {
+			T removed = list[givenPosition - 1]; // Save the T object at the givenPosition in a temp file to return after
+												// removing it from the list
+			@SuppressWarnings("unchecked")
+			T[] temp = (T[]) new Object[list.length - 1]; // create a temp T[] that is one size smaller than list
+			removeGap(givenPosition - 1); // remove the object at the givenPosition in the array
+			list[numberOfEntries] = null;
+			numberOfEntries--;
+			for (int i = 0; i < temp.length; i++) {
+				temp[i] = list[i]; // copy list into temp since list was adjusted in the makeRoom() method;
+			}
 			list = temp; // copy temp into list to keep new, cleaner array
+			return removed;
+		} catch (IndexOutOfBoundsException e) {
+			throw new Error("Error: Index is out of bounds for current array.");
 		}
-		return removed;
 	}
 
 	/** Removes all entries from this list. */
@@ -119,9 +125,12 @@ public class AList<T> implements ListInterface<T> {
 	 *                                   givenPosition greater than getLength()+1.
 	 */
 	public T replace(int givenPosition, T newEntry) {
-		indexCheck(givenPosition);
-		list[givenPosition] = newEntry;
-		return newEntry;
+		try {
+			list[givenPosition - 1] = newEntry;
+			return newEntry;
+		} catch (IndexOutOfBoundsException e) {
+			throw new Error("Error: Index is out of bounds for current array.");
+		}
 	}
 
 	/**
@@ -134,8 +143,11 @@ public class AList<T> implements ListInterface<T> {
 	 *                                   givenPosition greater than getLength()+1.
 	 */
 	public T getEntry(int givenPosition) {
-		indexCheck(givenPosition);
-		return list[givenPosition];
+		try {
+			return list[givenPosition - 1];
+		} catch (IndexOutOfBoundsException e) {
+			throw new Error("Error: Index is out of bounds for current array.");
+		}
 	}
 
 	/**
@@ -147,7 +159,7 @@ public class AList<T> implements ListInterface<T> {
 	public boolean contains(T anEntry) {
 		for (int i = 0; i < numberOfEntries; i++) {
 			if (list[i].equals(anEntry)) {
-				return true; // if found
+				return true;
 			}
 		}
 		return false; // if not found
@@ -168,13 +180,9 @@ public class AList<T> implements ListInterface<T> {
 	 * @return True if the list is empty, or false if not.
 	 */
 	public boolean isEmpty() {
-		if (list[0] != null) {  //This assumes that list is always populated at the 0 index position, if it the list is not empty.
-			return false;	    //If it is possible for the index 0 position to be null, but at index 'n'
-		} else {				//there is an Object of type T, then this method no longer works; the method
-			return true;		//would have to search the entire array for any non-null objects. 
-		}
+		return (numberOfEntries == 0);
 	}
-	
+
 	/**
 	 * Retrieves all entries that are in this list in the order in which they occur
 	 * in the list.
@@ -183,26 +191,18 @@ public class AList<T> implements ListInterface<T> {
 	 */
 	public T[] toArray() {
 		@SuppressWarnings("unchecked")
-		T[] newArr = (T[]) new Object[numberOfEntries]; // creates a new array with the size being the exact number of entries in the current list
+		T[] newArr = (T[]) new Object[numberOfEntries]; // creates a new array with the size being the exact number of
+														// entries in the current list
+		
 		for (int i = 0; i < numberOfEntries; i++) {
 			newArr[i] = list[i];
 		}
 		return newArr;
 	}
-	
+
 	//////////////////////
 	/* Instance Methods */
 	//////////////////////
-
-	/*
-	 * Checks if the input index is outside the current array's boundaries.
-	 */
-	private void indexCheck(int index) {
-		if (index < 1 || index > getLength() + 1) {
-			throw new IndexOutOfBoundsException(
-					"Given index is out of bounds of current number of entries in this array.");
-		}
-	}
 
 	// Throws an exception if this object is not initialized.
 	private void checkInitialization() {

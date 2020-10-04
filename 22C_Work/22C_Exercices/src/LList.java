@@ -1,6 +1,7 @@
 /*
  * @Author: Aaron Wong
  * CIS 22C - Exercise 3
+ * Linked List class
  * LList.java
  */
 public class LList<T> implements ListInterface<T> {
@@ -8,10 +9,11 @@ public class LList<T> implements ListInterface<T> {
 	/////////////////
 	/* Inner Class */
 	/////////////////
+	@SuppressWarnings("hiding")
 	public class Node<T> {
 
 		/* Variables */
-		private T data; // this Node stores generic E as its datatype
+		private T data; // this Node stores generic T as its datatype
 		private Node<T> next;
 
 		/* Constructors */
@@ -48,18 +50,13 @@ public class LList<T> implements ListInterface<T> {
 	// * End of Inner Class *//
 
 	/* Member Variables */
-	private Node firstNode;
+	private Node<T> firstNode;
 	private int numberOfEntries;
 
 	/* Constructors */
 	public LList() {
 		firstNode = null;
 		numberOfEntries = 0;
-	}
-
-	public LList(Node node, int entries) {
-		firstNode = node;
-		numberOfEntries = entries;
 	}
 
 	//////////////////////
@@ -93,22 +90,30 @@ public class LList<T> implements ListInterface<T> {
 
 		return currentNode;
 	} // end getNodeAt
-	
+
 	///////////////////////
 	/* Inherited Methods */
 	///////////////////////
-	
+
 	/**
 	 * Adds a new entry to the end of this list. Entries currently in the list are
 	 * unaffected. The list's size is increased by 1.
 	 * 
 	 * @param newEntry The object to be added as a new entry.
 	 */
-	public void add(T newEntry) { 
-		need to iterate through list to reach the end, use a 'temp' variable
-		Node newNode = new Node(newEntry); // create a new Node from the object newEntry
-		firstNode.setNextNode(newNode);
-		numberOfEntries++;
+	public void add(T newEntry) {
+//		need to iterate through list to reach the end, use a 'temp' variable;
+		Node<T> newNode = new Node<T>(newEntry); // create a new Node from the object newEntry
+		if (numberOfEntries == 0) { // checking if there are any Nodes in the LList
+			firstNode = newNode;
+		} else { // go through linked list until the end is reached
+			Node<T> temp = firstNode;
+			while (temp.getNextNode() != null) {
+				temp = temp.getNextNode();
+			}
+			temp.setNextNode(newNode); // attach the newNode to the end of the list
+		}
+		numberOfEntries++; // increase number of entries in LList
 	}
 
 	/**
@@ -123,56 +128,181 @@ public class LList<T> implements ListInterface<T> {
 	 *                                   newPosition greater than getLength()+1.
 	 */
 	public void add(int newPosition, T newEntry) {
-		
-		
+		try {
+			Node<T> newNode = new Node<T>(newEntry); // create new node with the input
+			if (firstNode == null) { // checking if LList is empty
+				firstNode = newNode;
+			} else if (newPosition == 1){ // add to the beginning of the list
+				newNode.setNextNode(firstNode);
+				firstNode = newNode;
+			} else {
+				Node<T> current = firstNode;
+				int pos = 1;
+				while (pos + 1 < newPosition) {
+					current = current.getNextNode();
+					pos++;
+				}
+				Node<T> next = current.getNextNode();
+				current.setNextNode(newNode);
+				newNode.setNextNode(next);
+			}
+			numberOfEntries++; // regardless of position in LList, increment numberOfEntries
+		} catch (NullPointerException e) {
+			throw new IndexOutOfBoundsException();			
+		}
 	}
 
-	@Override
+	/**
+	 * Removes the entry at a given position from this list. Entries originally at
+	 * positions higher than the given position are at the next lower position
+	 * within the list, and the list's size is decreased by 1.
+	 * 
+	 * @param givenPosition An integer that indicates the position of the entry to
+	 *                      be removed.
+	 * @return A reference to the removed entry.
+	 * @throws IndexOutOfBoundsException if either givenPosition less than 1, or
+	 *                                   givenPosition greater than getLength()+1.
+	 */
 	public T remove(int givenPosition) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			Node<T> removed; // create a node to hold object being removed
+			if (firstNode == null) { // if list is empty
+				throw new Error();
+			} else if (givenPosition == 1) { // removing from the start of the list
+				removed = firstNode;
+				firstNode = firstNode.getNextNode();
+			} else { // iterate through list to reach givenPosition
+				Node<T> current = firstNode;
+				int pos = 1;
+				while (pos + 1 < givenPosition) { // if the next position is givenPosition, exit while loop to insert
+					current = current.getNextNode();
+					pos++;
+				}
+				removed = current.getNextNode();
+				current.setNextNode(current.getNextNode().getNextNode());
+			}
+			numberOfEntries--;
+			return removed.getData();
+		} catch (Exception e) {
+			throw new Error("Error: Index is out of bounds for current list.");
+		}
 	}
 
-	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		firstNode = null; // by setting firstNode to null, it drops all other nodes in the list.
+		numberOfEntries = 0;
+
+	}
+	
+	/**
+	 * Replaces the entry at a given position in this list.
+	 * 
+	 * @param givenPosition An integer that indicates the position of the entry to
+	 *                      be replaced.
+	 * @param newEntry      The object that will replace the entry at the position
+	 *                      givenPosition.
+	 * @return The original entry that was replaced.
+	 * @throws IndexOutOfBoundsException if either givenPosition less than 1, or
+	 *                                   givenPosition greater than getLength()+1.
+	 */
+	public T replace(int givenPosition, T newEntry) { // Replaces node with a new node, rather than changing the data variable.
+		try {
+			Node<T> replace = new Node<T>(newEntry);
+			if (givenPosition == 1) { // replacing the first item in the list
+				replace.setNextNode(firstNode.getNextNode());
+				firstNode = replace;
+				if (numberOfEntries == 0) { // if replacing an empty list with an object, increment numberOfEntries
+					numberOfEntries++; 
+				}
+			} else { // if there is more than one item in the list
+				Node<T> current = firstNode;
+				int pos = 1;
+				while (pos + 1 < givenPosition) {
+					current = current.getNextNode();
+					pos++;
+				}
+				Node<T> next = current.getNextNode().getNextNode();
+				current.setNextNode(replace);
+				replace.setNextNode(next);
+			}
+			return replace.getData();
+		} catch (Exception e) {
+			throw new Error();
+		}
 	}
 
-	@Override
-	public T replace(int givenPosition, T newEntry) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
+	/**
+	 * Retrieves the entry at a given position in this list.
+	 * 
+	 * @param givenPosition An integer that indicates the position of the desired
+	 *                      entry.
+	 * @return A reference to the indicated entry.
+	 * @throws IndexOutOfBoundsException if either givenPosition less than 1, or
+	 *                                   givenPosition greater than getLength()+1.
+	 */
 	public T getEntry(int givenPosition) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			Node<T> current = firstNode;
+			int pos = 1;
+			while (pos < givenPosition) {
+				current = current.getNextNode();
+				pos++;
+			}
+			return current.getData();
+		} catch (Exception e) {
+			throw new Error();
+		}
 	}
 
-	@Override
+	/**
+	 * Sees whether this list contains a given entry.
+	 * 
+	 * @param anEntry The object that is the desired entry.
+	 * @return True if the list contains anEntry, or false if not.
+	 */
 	public boolean contains(T anEntry) {
-		// TODO Auto-generated method stub
-		return false;
+		try {
+			Node<T> check = new Node<T>(anEntry);
+			Node<T> current = firstNode;
+			boolean contain = false;
+			int pos = 1;
+			while (pos <= numberOfEntries) {
+				if (current.getData().equals(check.getData())) {
+					contain = true;
+				}
+				current = current.getNextNode();
+				pos++;
+			}
+			return contain;
+		} catch (Exception e) {
+			throw new Error();
+		}
 	}
 
-	@Override
+
 	public int getLength() {
-		// TODO Auto-generated method stub
-		return 0;
+		return numberOfEntries;
 	}
 
-	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return (numberOfEntries == 0);
 	}
 
 	@Override
 	public T[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
+		@SuppressWarnings("unchecked")
+		T[] newArr = (T[]) new Object[numberOfEntries]; // creates a new array with the size being the exact number of
+														// entries in the current list
+		Node<T> temp = firstNode;
+		for (int i = 0; i < numberOfEntries; i++) {
+			newArr[i] = temp.getData();
+			temp = temp.getNextNode();
+		}
+		return newArr;
 	}
+	
+	/* Instance Methods */
+	//////////////////////
+	
 
 }

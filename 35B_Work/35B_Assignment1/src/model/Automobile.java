@@ -2,7 +2,7 @@
  * Aaron Wong
  * 9/27/2020
  * CIS35B - Assignment 1
- * Automotive.java
+ * Automobile.java
  */
 
 package model;
@@ -10,7 +10,7 @@ package model;
 import java.io.Serializable;
 
 @SuppressWarnings("serial")
-public class Automotive extends OptionSet implements Serializable{
+public class Automobile extends OptionSet implements Serializable{
 
 	/* Member Variables */
 	private String name;
@@ -23,15 +23,15 @@ public class Automotive extends OptionSet implements Serializable{
 	//////////////////
 	
 	// Default
-	public Automotive() {
-		this.name = "default automotive name";
+	public Automobile() {
+		this.name = "default Automobile name";
 		this.basePrice = 0;
 		this.optSet = new OptionSet[1];
 		this.count = 0;
 	}
 	
-	// Construct an Automotive using name and baseprice
-	public Automotive(String name, float basePrice) {
+	// Construct an Automobile using name and baseprice
+	public Automobile(String name, float basePrice) {
 		this.name = name;
 		this.basePrice = basePrice;
 		this.optSet = new OptionSet[1]; 
@@ -39,36 +39,36 @@ public class Automotive extends OptionSet implements Serializable{
 	}
 	
 	// One parameter
-	public Automotive(String name) {
+	public Automobile(String name) {
 		this(name, new OptionSet[1], 0);
 	}
 	
-	public Automotive(OptionSet[] optSet) {
+	public Automobile(OptionSet[] optSet) {
 		this("Name unknown", optSet, 0);
 	}
 	
-	public Automotive(float price) {
+	public Automobile(float price) {
 		this("Name unknown", new OptionSet[1], price);
 	}
 	
 	// Two parameters
-	public Automotive(String name, OptionSet[] optSet) {
+	public Automobile(String name, OptionSet[] optSet) {
 		this(name, optSet, 0);
 	}
 
 	
-	public Automotive(OptionSet[] optSet, float price) {
+	public Automobile(OptionSet[] optSet, float price) {
 		this("Name unknown", optSet, price);
 	}
 	
 	// Three parameters
-	public Automotive(String name, OptionSet[] optSet, float price) {
+	public Automobile(String name, OptionSet[] optSet, float price) {
 		this.name = name;
 		this.optSet = optSet;
 		this.basePrice = price;
 	}
 	
-	public Automotive(String name, float basePrice, int size) {
+	public Automobile(String name, float basePrice, int size) {
 		this.name = name;
 		this.basePrice = basePrice;
 		this.optSet = new OptionSet[size];
@@ -93,12 +93,26 @@ public class Automotive extends OptionSet implements Serializable{
 	public float getTotalPrice() {
 		return totalPrice;
 	}
-	public OptionSet[] getOptSet() {
+	public OptionSet[] getOptSetArr() {
 		return optSet;
 	}
 	
-	public OptionSet getOptArr(int pos) {
+	public String getOptSetName(OptionSet optSet) {
+		return optSet.getName();
+	}
+	
+	public String getOptName(OptionSet.Option opt) {
+		return opt.getName();
+	}
+	
+	// Returns the OptionSet in the given position in the OptionSet array.
+	public OptionSet getOptSet(int pos) {
 		return optSet[pos];
+	}
+	
+	// Return array of options given an optionSet 
+	public Option[] getOptArr(OptionSet optSet) {
+		return optSet.getOptions();
 	}
 	
 	public int getCount() {
@@ -117,6 +131,10 @@ public class Automotive extends OptionSet implements Serializable{
 		optSet = newOptSet;
 	}
 	
+	public void setOptSetName(OptionSet optSet, String name) {
+		optSet.setName(name);
+	}
+	
 	public void setBasePrice(float price) {
 		basePrice = price;
 	}
@@ -131,6 +149,10 @@ public class Automotive extends OptionSet implements Serializable{
 		}
 	}
 	
+	public void setOptionPrice(OptionSet.Option opt, float price) {
+		opt.setPrice(price);
+	}
+	
 	public void setCount(int count) {
 		this.count = count;
 	}
@@ -141,7 +163,7 @@ public class Automotive extends OptionSet implements Serializable{
 	
 	/*
 	 * Method: findOptSet()
-	 * @Param OptionSet: a single optionset of the Automotive
+	 * @Param OptionSet: a single optionset of the Automobile
 	 * Searches the OptionSet[] array for the param optionset and returns it's index position.
 	 */
 	public int findOptSet(OptionSet findOptSet) {
@@ -156,7 +178,7 @@ public class Automotive extends OptionSet implements Serializable{
 	/*
 	 * Method: addOptSet()
 	 * @Param addOptSet: an array of options, or an instance of the OptionSet class
-	 * First checks the Automotive's OptionSet[] array (variable optSet) to see if it is nearing capacity 
+	 * First checks the Automobile's OptionSet[] array (variable optSet) to see if it is nearing capacity 
 	 * via the variable 'count', which holds the number of non-null objects in the array.
 	 * If adding the param brings the array to full capacity, it will double the size of the array.
 	 * Once the param is added to optSet, it will increase the count by one.
@@ -188,7 +210,7 @@ public class Automotive extends OptionSet implements Serializable{
 	/*
 	 * Method: deleteOptSet()
 	 * @Param OptionSet delOptSet; an instance of the OptionSet class
-	 * Using the param delOptSet; the program will first search the Automotive class 
+	 * Using the param delOptSet; the program will first search the Automobile class 
 	 * for a matching OptionSet using the findOptSet() method.
 	 * If this method returns a non-negative integer, it will use that as the index position
 	 * to copy over objects in the following index.
@@ -222,7 +244,7 @@ public class Automotive extends OptionSet implements Serializable{
 	
 	/*
 	 * Method printOptSets()
-	 * Method will print the toString() of the optionSet[] of the current Automotive Object
+	 * Method will print the toString() of the optionSet[] of the current Automobile Object
 	 */
 	public void printOptSets() {
 		for (int i = 0; i < count; i++) {
@@ -248,7 +270,7 @@ public class Automotive extends OptionSet implements Serializable{
 	
 	@Override public String toString() {
 		String priceF = String.format("%.2f", basePrice);
-		StringBuffer str = new StringBuffer("Automotive Name: " + name + "\nPrice: $" + priceF);
+		StringBuffer str = new StringBuffer("Automobile Name: " + name + "\nPrice: $" + priceF);
 		for (int i = 0; i < count; i++) {
 			str.append("\n" + optSet[i]);
 		}

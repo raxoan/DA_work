@@ -11,21 +11,21 @@ import model.*;
 
 public class FileIO {
 	/*
-	 * using entire automotive class, build an auto object with specified options
+	 * using entire Automobile class, build an auto object with specified options
 	 * selected (one color, one transmission, etc)
 	 * 
 	 * @param String filename: name of file
 	 * 
-	 * @Param Automotive a1: Automotive object created from text file. methods,
+	 * @Param Automobile a1: Automobile object created from text file. methods,
 	 * removing options that are not wanted
 	 */
-	public static Automotive buildAutoObject(String fileName) throws FileNotFoundException {
+	public static Automobile buildAutoObject(String fileName) throws FileNotFoundException {
 
 		FileReader fr = new FileReader(fileName);
 		BufferedReader br = new BufferedReader(fr);
 		String autoName, optSetName, allOpt;
 		float basePrice;
-		Automotive auto = new Automotive();
+		Automobile auto = new Automobile();
 		try {
 			// while there are still lines in the text
 			autoName = br.readLine(); // first line is autoname

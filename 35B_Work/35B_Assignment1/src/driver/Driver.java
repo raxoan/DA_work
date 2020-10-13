@@ -13,8 +13,8 @@ import util.*;
 public class Driver {
 
 	public static void main(String[] args) throws FileNotFoundException {
-		String fileName = "Automotive.txt";
-		Automotive FordZTW = FileIO.buildAutoObject(fileName);
+		String fileName = "Automobile.txt";
+		Automobile FordZTW = FileIO.buildAutoObject(fileName);
 		System.out.println(FordZTW.toString());
 		
 		try {
@@ -27,7 +27,7 @@ public class Driver {
 			FileInputStream fileIn = new FileInputStream("FordZTW.txt");
 			ObjectInputStream in = new ObjectInputStream(fileIn);
 			try {
-				Automotive newFordZTW = (Automotive) in.readObject();
+				Automobile newFordZTW = (Automobile) in.readObject();
 				System.out.println("Deserialization of file complete.\n");
 				System.out.print(newFordZTW.toString());
 			} catch (ClassNotFoundException e) {

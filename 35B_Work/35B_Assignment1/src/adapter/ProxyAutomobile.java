@@ -35,7 +35,6 @@ public abstract class ProxyAutomobile {
 		try {
 			a1 = FileIO.buildAutoObject(filename);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

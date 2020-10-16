@@ -5,7 +5,7 @@ Fort Knox Gold Clearcoat Metallic, Liquid Grey Clearcoat Metallic, Infra-Red Cle
 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Transmission
 Automatic, Manual
-0, -815
+0, -815, test
 Brakes
 Standard, ABS, ABS Adv
 0, 400, 1625

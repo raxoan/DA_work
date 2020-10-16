@@ -8,6 +8,7 @@ package adapter;
 
 import java.io.FileNotFoundException;
 
+import exceptionHandler.AutoExceptions;
 import model.*;
 import util.*;
 
@@ -34,7 +35,8 @@ public abstract class ProxyAutomobile {
 	public void buildAuto(String filename) {
 		try {
 			a1 = FileIO.buildAutoObject(filename);
-		} catch (FileNotFoundException e) {
+		} catch (AutoExceptions e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

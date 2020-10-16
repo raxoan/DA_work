@@ -28,44 +28,39 @@ public class FileIO {
 			String autoName, optSetName, allOpt;
 			float basePrice;
 			Automobile auto = new Automobile();
-			try {
-				// while there are still lines in the text
-				autoName = br.readLine(); // first line is autoname
-				auto.setName(autoName);
-				String numStringTemp;
-				numStringTemp = br.readLine();
-				basePrice = Float.parseFloat(numStringTemp);// next line is baseprice
-				auto.setBasePrice(basePrice);
+			// while there are still lines in the text
+			autoName = br.readLine(); // first line is autoname
+			auto.setName(autoName);
+			String numStringTemp;
+			numStringTemp = br.readLine();
+			basePrice = Float.parseFloat(numStringTemp);// next line is baseprice
+			auto.setBasePrice(basePrice);
 
-				do { // do-while loop to create and add option & optionSets
-					optSetName = br.readLine(); // Name of current option set
-					OptionSet optSet = new OptionSet(optSetName); // create an optionset with above parameters.
-																	// Using constructors is not explicitly
-																	// forbidden according to instructions
-
-					allOpt = br.readLine(); // the name of all of the options
-					String[] strArr = allOpt.split(", "); // create an array to hold all separate option names
-					String prices = br.readLine(); // read all prices into a string
-					String[] priceArr = prices.split(", "); // create a string array of int prices
-					int[] intArr = new int[priceArr.length];
-					for (int j = 0; j < intArr.length; j++) {
-						intArr[j] = Integer.parseInt(priceArr[j]); // parse the integers from a string arr to int arr
-					}
-					for (int k = 0; k < intArr.length; k++) { // create options objects and add to optionset
-						OptionSet.Option opt = new OptionSet.Option(strArr[k], intArr[k]); // create new option
-						auto.addOption(optSet, opt); // add option to option[]
-					}
-					auto.addOptSet(optSet);
-				} while (br.ready());
-				br.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			do { // do-while loop to create and add option & optionSets
+				optSetName = br.readLine(); // Name of current option set
+				OptionSet optSet = new OptionSet(optSetName); // create an optionset with above parameters.
+																// Using constructors is not explicitly
+																// forbidden according to instructions
+				allOpt = br.readLine(); // the name of all of the options
+				String[] strArr = allOpt.split(", "); // create an array to hold all separate option names
+				String prices = br.readLine(); // read all prices into a string
+				String[] priceArr = prices.split(", "); // create a string array of int prices
+				int[] intArr = new int[priceArr.length];
+				for (int j = 0; j < intArr.length; j++) {
+					intArr[j] = Integer.parseInt(priceArr[j]); // parse the integers from a string arr to int arr
+				}
+				for (int k = 0; k < intArr.length; k++) { // create options objects and add to optionset
+					OptionSet.Option opt = new OptionSet.Option(strArr[k], intArr[k]); // create new option
+					auto.addOption(optSet, opt); // add option to option[]
+				}
+				auto.addOptSet(optSet);
+			} while (br.ready());
+			br.close();
 			return auto;
-		} catch (FileNotFoundException e) {
-			throw new AutoExceptions(400, "File Not Found");
+		} catch (Exception e) {
+			throw new AutoExceptions(e);
 		}
-		
+
 	}
 
 }

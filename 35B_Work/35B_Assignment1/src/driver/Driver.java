@@ -7,12 +7,13 @@ package driver;
 
 import java.io.*;
 
+import exceptionHandler.AutoExceptions;
 import model.*;
 import util.*;
 
 public class Driver {
 
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws FileNotFoundException, AutoExceptions {
 		String fileName = "Automobile.txt";
 		Automobile FordZTW = FileIO.buildAutoObject(fileName);
 		System.out.println(FordZTW.toString());

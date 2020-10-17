@@ -1,1 +1,12 @@
+/Counter.class
+/CounterInitializationException.class
+/CounterTest.class
+/Rational.class
+/RationalTest.class
+/ZeroDenominatorException.class
+/.classpath
+/.gitignore
+/.project
+/bags/
+/lists/
 /stack/

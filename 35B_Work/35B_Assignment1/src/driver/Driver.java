@@ -6,18 +6,22 @@
 package driver;
 
 import java.io.*;
-
-import exceptionHandler.AutoExceptions;
+import exceptionHandler.*;
 import model.*;
 import util.*;
 
 public class Driver {
-
-	public static void main(String[] args) throws FileNotFoundException, AutoExceptions {
-		String fileName = "Automobile.txt";
+	/**
+	 * Main method for building Automobile class using internal class.
+	 * @param args
+	 * @throws AutoExceptions
+	 * @throws IOException
+	 */
+	public static void main(String[] args) throws IOException, AutoExceptions {
+		String fileName = "Autmobile.txt";
 		Automobile FordZTW = FileIO.buildAutoObject(fileName);
 		System.out.println(FordZTW.toString());
-		
+
 		try {
 			FileOutputStream fileOut = new FileOutputStream("FordZTW.txt");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -37,6 +41,6 @@ public class Driver {
 			in.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}	
+		}
 	}
 }

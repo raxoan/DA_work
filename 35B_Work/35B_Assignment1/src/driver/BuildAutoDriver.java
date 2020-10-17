@@ -7,22 +7,21 @@
 package driver;
 
 import adapter.*;
-import exceptionHandler.*;
 
 public class BuildAutoDriver {
-
+	/**
+	 * Main method for API building Automobile class.
+	 * @param args
+	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		String fileName = "Automobile.txt";
+		String fileName = "Automoile.txt"; // File name incorrect on purpose
 		String modelName = "Ford Wagon ZTW";
 		BuildAuto a1 = new BuildAuto();
 		a1.buildAuto(fileName);
 		a1.printAuto(modelName);
-		a1.updateOptionSetName(modelName, "Color", "potato");
-		System.out.println("Changing 'color' to 'potato'");
+		a1.updateOptionSetName(modelName, "Color", "Apples"); // Changing OptionSet name "Color" to "Apples" 
 		a1.printAuto(modelName);
-		a1.updateOptionPrice(modelName, "Brakes", "ABS", 6969);
-		System.out.println("Changing price of ABS Brakes to $6,969.00");
+		a1.updateOptionPrice(modelName, "Apples", "Fort Knox Gold Clearcoat Metallic", 100); // Changing price to $100
 		a1.printAuto(modelName);
 	}
 

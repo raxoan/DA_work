@@ -268,11 +268,20 @@ public class Automobile extends OptionSet implements Serializable{
 	/* Overridden Methods */
 	////////////////////////
 	
+//	@Override public String toString() {
+//		String priceF = String.format("%.2f", basePrice);
+//		StringBuffer str = new StringBuffer("Automobile Name: " + name + "\nPrice: $" + priceF);
+//		for (int i = 0; i < count; i++) {
+//			str.append("\n" + optSet[i]);
+//		}
+//		return str.toString();
+//	}
 	@Override public String toString() {
 		String priceF = String.format("%.2f", basePrice);
 		StringBuffer str = new StringBuffer("Automobile Name: " + name + "\nPrice: $" + priceF);
 		for (int i = 0; i < count; i++) {
-			str.append("\n" + optSet[i]);
+			str.append("\n" + optSet[i].toString());
+			
 		}
 		return str.toString();
 	}

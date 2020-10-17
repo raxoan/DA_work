@@ -3,6 +3,7 @@
  * 9/29/2020
  * CIS 35B - Assignment 1
  * FileIO.java
+ * Contains a copy of FileIO.java class used for Assignment 1.
  */
 package util;
 

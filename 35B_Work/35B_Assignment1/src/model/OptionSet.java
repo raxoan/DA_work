@@ -243,7 +243,16 @@ public class OptionSet implements Serializable{
 	/* Overridden Methods */
 	@Override
 	public String toString() {
-		StringBuffer str = new StringBuffer(name);
+		StringBuffer str = new StringBuffer(name + "\n" + opt[0].getName());
+		for (int i = 1; i < count; i++) {
+			str.append(", " + opt[i].getName());
+		}
+		String price1 = String.format("%.2f", opt[0].getPrice());
+		str.append("\n$" + price1);
+		for (int j = 1; j < count; j++) {
+			String priceF = String.format("%.2f", opt[j].getPrice());
+			str.append(", $" + priceF);
+		}
 		return str.toString();
 	}
 

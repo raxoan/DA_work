@@ -6,9 +6,6 @@
 
 package adapter;
 
-import java.io.FileNotFoundException;
-
-import exceptionHandler.AutoExceptions;
 import model.*;
 import util.*;
 
@@ -30,13 +27,12 @@ public abstract class ProxyAutomobile {
 	 * instance of Automobile. This method does not have to return the Auto
 	 * instance.
 	 * 
-	 * @param filename
+	 * @param filename 
 	 */
-	public void buildAuto(String filename) {
+	public void buildAuto(String filename){
 		try {
 			a1 = FileIO.buildAutoObject(filename);
-		} catch (AutoExceptions e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

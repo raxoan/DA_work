@@ -1,0 +1,20 @@
+Tesla Model 3
+25500
+Color
+Pearl While
+1000
+Autopilot
+Yes
+4000
+Brakes
+ABS
+500
+Side Impact Air Bags
+Yes
+500
+All-Glass Roof
+Yes
+600
+Supercharging
+Yes
+300

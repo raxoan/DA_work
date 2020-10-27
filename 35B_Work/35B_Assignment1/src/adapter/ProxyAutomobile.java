@@ -1,12 +1,15 @@
 /**
  * @author Aaron
- * CIS 35B - Lab 2
+ * CIS 35B - Lab 3
  * ProxyAutomobile.java
  */
 
 package adapter;
 
+import java.util.ArrayList;
+
 import model.*;
+import model.OptionSet.Option;
 import util.*;
 
 /**
@@ -46,6 +49,8 @@ public abstract class ProxyAutomobile {
 	public void printAuto(String modelName) {
 		if (a1.getName().equalsIgnoreCase(modelName)) {
 			System.out.println(a1.toString());
+		} else {
+			System.out.println("print failed");
 		}
 	}
 
@@ -61,7 +66,8 @@ public abstract class ProxyAutomobile {
 		if (a1.getName().equalsIgnoreCase(modelName)) {
 			OptionSet optSet = findOptionSet(a1, optionSetName);
 			a1.setOptSetName(optSet, newName);
-			
+		} else {
+			System.out.println("updateOptionSetName() failed");
 		}
 	}
 
@@ -78,18 +84,20 @@ public abstract class ProxyAutomobile {
 	public void updateOptionPrice(String modelName, String optionSetName, String optionName, float newPrice) {
 		if (a1.getName().equalsIgnoreCase(modelName)) {
 			OptionSet optSet = findOptionSet(a1, optionSetName);
-			OptionSet.Option[] optArr = a1.getOptArr(optSet);
+			ArrayList<Option> optArr = a1.getOptArr(optSet);
 			OptionSet.Option opt;
 			int count = 0;
-			while (count < optArr.length) {
-				if (a1.getOptName(optArr[count]).equalsIgnoreCase(optionName)) {
-					opt = optArr[count];
+			while (count < optArr.size()) {
+				if (a1.getOptName(optArr.get(count)).equalsIgnoreCase(optionName)) {
+					opt = optArr.get(count);
 					a1.setOptionPrice(opt, newPrice);
-					count = optArr.length;
+					count = optArr.size();
 				} else {
 					count++;
 				}
 			}
+		} else {
+			System.out.println("updateOptionPrice() failed");
 		}
 	}
 	/**
@@ -99,11 +107,11 @@ public abstract class ProxyAutomobile {
 	 * @return
 	 */
 	public OptionSet findOptionSet(Automobile auto, String optionSetName) {
-		OptionSet[] optSetArr = auto.getOptSetArr(); // retrieves the OptionSet array of the object a1.
+		ArrayList<OptionSet> optSetArr = auto.getOptSetArr(); // retrieves the OptionSet array of the object a1.
 		OptionSet optSet = new OptionSet();
 		int count = 0;
-		while (count < optSetArr.length) {
-			if (auto.getOptSetName(optSetArr[count]).equalsIgnoreCase(optionSetName)) { // searches array for matching
+		while (count < optSetArr.size()) {
+			if (auto.getOptSetName(optSetArr.get(count)).equalsIgnoreCase(optionSetName)) { // searches array for matching
 																						// name
 				optSet = auto.getOptSet(count);
 				return optSet;

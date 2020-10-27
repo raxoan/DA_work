@@ -1,0 +1,17 @@
+Honda Civic
+19000
+Color
+Blue
+200
+Brakes
+ABS
+500
+Side Impact Air Bags
+Yes
+500
+Transmission
+Automatic
+0
+Body Kit
+Complete Package
+3000

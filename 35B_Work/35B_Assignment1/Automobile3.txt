@@ -1,0 +1,17 @@
+Ford Wagon ZTW
+18445
+Color
+Sangria Red Clearcoat Metallic
+0
+Transmission
+Automatic
+0
+Brakes
+ABS Adv
+1625
+Side Impact Air Bags
+No
+0
+Moonroof
+Yes
+595

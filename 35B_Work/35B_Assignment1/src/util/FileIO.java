@@ -1,7 +1,6 @@
 /* 
  * Aaron Wong
- * 9/29/2020
- * CIS 35B - Assignment 2
+ * CIS 35B - Assignment 3
  * FileIO.java
  */
 package util;
@@ -61,7 +60,10 @@ public class FileIO {
 					}
 					auto.addOptSet(optSet);
 				} while (br.ready());
+				auto.setTotalPrice(); // calculate the total price of the auto object
+				
 				br.close();
+				
 				check = true;
 			} catch (Exception e) {
 				fix.fixCase(e);

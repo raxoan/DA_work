@@ -1,13 +1,13 @@
 /*
  * Aaron Wong
- * 9/27/2020
- * CIS35B - Assignment 1
+ * CIS35B - Assignment 3
  * OptionSet.java
  */
 
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 @SuppressWarnings("serial")
 public class OptionSet implements Serializable{
@@ -83,16 +83,17 @@ public class OptionSet implements Serializable{
 
 	/* Member Variables */
 	private String name;
-	private Option[] opt;
-	private int count;
-	private float price;
+//	private Option[] opt;
+	private ArrayList<Option> opt;
+//	private int count;
+	private float optPrice;
 
 	/* Constructors */
 	// Default
 	public OptionSet() {
-		this.opt = new Option[1];
+		this.opt = new ArrayList<Option>();
 		this.name = "Name unknown";
-		this.count = 0;
+//		this.count = 0;
 //		this.optPrices = 0;
 	}
 
@@ -102,12 +103,12 @@ public class OptionSet implements Serializable{
 	}
 	
 	// One parameter
-	public OptionSet(Option[] opt) {
+	public OptionSet(ArrayList<Option> opt) {
 		this("Name unknown", opt);
 	}
 
 	public OptionSet(String name) {
-		this(name, new Option[1]);
+		this(name, new ArrayList<Option>());
 	}
 	
 	// Super constructor
@@ -116,23 +117,23 @@ public class OptionSet implements Serializable{
 	}
 	
 	// Two parameters
-	OptionSet(String name, Option[] opt) {
+	public OptionSet(String name, ArrayList<Option> opt) {
 		this.opt = opt;
 		this.name = name;
 	}
 	
 	// Creates an optionset of size num with name
-	public OptionSet(String name, int num) {
-		this.name = name;
-		this.opt = new Option[num];
-		for (int i = 0; i < num; i++) {
-			opt[i] = new Option();
-//			count++;
-		}
-	}
+//	public OptionSet(String name, int num) {
+//		this.name = name;
+//		this.opt = new Option[num];
+//		for (int i = 0; i < num; i++) {
+//			opt[i] = new Option();
+////			count++;
+//		}
+//	}
 
 	/* Getter Methods */
-	protected Option[] getOptions() {
+	protected ArrayList<Option> getOptions() {
 		return opt;
 	}
 
@@ -140,13 +141,21 @@ public class OptionSet implements Serializable{
 		return name;
 	}
 	
-
+	/**
+	 * Returns the total price of the option in this optionSet, can be negative.
+	 * This optionset may hold one option, in the event of a final product,
+	 * or it can hold many options for the base model that contains all possible options
+	 * @return optPrice
+	 */
 	protected float getPrices() {
-		return price;
+		for (int i = 0; i < opt.size(); i++) {
+			optPrice += opt.get(i).getPrice();
+		}
+		return optPrice;
 	}
 
-	protected int getCount() {
-		return count;
+	protected int getSize() {
+		return opt.size();
 	}
 
 	/* Setter Methods */
@@ -154,66 +163,37 @@ public class OptionSet implements Serializable{
 		this.name = name;
 	}
 	
-	protected void setOpt(Option[] opt) {
+	protected void setOpt(ArrayList<Option> opt) {
 		this.opt = opt;
 	}
 	
-	protected void setCount(int count) {
-		this.count = count;
-	}
-	
-	protected void setPrice(float price) {
-		this.price = price;
-	}
-	
-	protected void setFinalOption(int pos) { // select single option, remove all other options from list
-		Option[] temp = new Option[1];
-		temp[1] = opt[pos];
-		opt = temp;
-	}
+//	protected void setFinalOption(int pos) { // select single option, remove all other options from list
+//		ArrayList<Option> temp = new ArrayList<Option>();
+//		temp[1] = opt[pos];
+//		opt = temp;
+//	}
 	
 	/* Instance methods */
 	protected int findOption(Option opt) {
-		for (int i = 0; i < this.opt.length; i++) {
-			if (this.opt[i].equals(opt)) { // search array of options for specified option
-				return i;
-			}
+		if (this.opt.contains(opt)) {
+			return this.opt.indexOf(opt);
 		}
 		return -1; // return -1 if not found
 	}
 	
 	
 	protected void addOption(Option addOpt) {
-		if (count + 1 >= opt.length) {
-			Option[] tempOpt = new Option[opt.length * 2];
-			for (int j = 0; j < count; j++) {
-				tempOpt[j] = opt[j];
-			}
-			opt = tempOpt;
-		}
-		opt[count] = addOpt;
-		count++;
+		opt.add(addOpt);
 	}
 
 	/*
 	 * Method deleteOption();
-	 * Pre-requisite: findOption() method to return an int value, the index position of an Option in an array;
-	 * @Param int pos;
+	 * 
+	 * @param int pos;
 	 * 
 	 */
 	protected void deleteOption(int pos) { // delete based on index pos provided
-		if (pos != -1) {
-			Option[] temp = new Option[opt.length - 1]; // create copy of opt[] that is 1 unit smaller
-			for (int i = pos; i < opt.length; i++) { // starting at the index at which the option is found
-				opt[i] = opt[i + 1]; // simple removal by copying in the next object in the array
-			}
-			for (int j = 0; j < temp.length; j++) {
-				temp[j] = opt[j]; // copy the opt[] into a temp[] since it has the correct array size
-			}
-			opt = temp; // replace the old opt array with the clean version
-		} else {
-			throw new IndexOutOfBoundsException();
-		}
+		opt.remove(pos);
 	}
 	
 	
@@ -223,11 +203,11 @@ public class OptionSet implements Serializable{
 	 * creates a temp option[] of size 1 with the @param as the only option in the array
 	 * replaces the opt in the class with temp.
 	 */
-	protected void deleteAllOther(int pos) {
-		Option[] temp = new Option[1];
-		temp[0] = opt[pos];
-		opt = temp;
-	}
+//	protected void deleteAllOther(int pos) {
+//		Option[] temp = new ArrayList<Option>();
+//		temp[0] = opt[pos];
+//		opt = temp;
+//	}
 
 	/*
 	 * Method: updateOption();
@@ -235,22 +215,22 @@ public class OptionSet implements Serializable{
 	 * @Param int pos; the position within the Option[] array where the param option will go
 	 */
 	
-	protected void updateOption(Option update, int pos) {
-		opt[pos] = update; // reassign the object at index pos to new update option
-	}
+//	protected void updateOption(Option update, int pos) {
+//		opt[pos] = update; // reassign the object at index pos to new update option
+//	}
 
 	
 	/* Overridden Methods */
 	@Override
 	public String toString() {
-		StringBuffer str = new StringBuffer(name + "\n" + opt[0].getName());
-		for (int i = 1; i < count; i++) {
-			str.append(", " + opt[i].getName());
+		StringBuffer str = new StringBuffer(name + "\n" + opt.get(0).getName());
+		for (int i = 1; i < opt.size(); i++) {
+			str.append(", " + opt.get(i).getName());
 		}
-		String price1 = String.format("%.2f", opt[0].getPrice());
+		String price1 = String.format("%.2f", opt.get(0).getPrice());
 		str.append("\n$" + price1);
-		for (int j = 1; j < count; j++) {
-			String priceF = String.format("%.2f", opt[j].getPrice());
+		for (int j = 1; j < opt.size(); j++) {
+			String priceF = String.format("%.2f", opt.get(j).getPrice());
 			str.append(", $" + priceF);
 		}
 		return str.toString();
@@ -267,5 +247,6 @@ public class OptionSet implements Serializable{
 			return this.opt.equals(os.opt) && this.name.equals(os.name);
 		}
 	}
+
 
 }

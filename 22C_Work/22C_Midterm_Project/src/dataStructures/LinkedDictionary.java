@@ -196,6 +196,10 @@ public class LinkedDictionary<K, V> implements DictionaryInterface<K, V> {
 		}
 		return result;
 	}
+	
+	public Node getNode(K key, V value) {
+		return null;
+	}
 
 	 /** Sees whether a specific entry is in this dictionary.
     @param key  An object search key of the desired entry.

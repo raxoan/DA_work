@@ -90,11 +90,11 @@ public class AList<T> implements ListInterface<T> {
 	 */
 	public T remove(int givenPosition) {
 		try {
-			T removed = list[givenPosition - 1]; // Save the T object at the givenPosition in a temp file to return after
+			T removed = list[givenPosition]; // Save the T object at the givenPosition in a temp file to return after
 												// removing it from the list
 			@SuppressWarnings("unchecked")
-			T[] temp = (T[]) new Object[list.length - 1]; // create a temp T[] that is one size smaller than list
-			removeGap(givenPosition - 1); // remove the object at the givenPosition in the array
+			T[] temp = (T[]) new Object[list.length]; // create a temp T[] that is one size smaller than list
+			removeGap(givenPosition); // remove the object at the givenPosition in the array
 			list[numberOfEntries] = null;
 			numberOfEntries--;
 			for (int i = 0; i < temp.length; i++) {
@@ -136,7 +136,7 @@ public class AList<T> implements ListInterface<T> {
 	 */
 	public T replace(int givenPosition, T newEntry) {
 		try {
-			list[givenPosition - 1] = newEntry;
+			list[givenPosition] = newEntry;
 			return newEntry;
 		} catch (IndexOutOfBoundsException e) {
 			throw new Error("Error: Index is out of bounds for current array.");
@@ -154,7 +154,7 @@ public class AList<T> implements ListInterface<T> {
 	 */
 	public T getEntry(int givenPosition) {
 		try {
-			return list[givenPosition - 1];
+			return list[givenPosition];
 		} catch (IndexOutOfBoundsException e) {
 			throw new Error("Error: Index is out of bounds for current array.");
 		}

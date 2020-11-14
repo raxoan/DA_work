@@ -1,0 +1,17 @@
+Ford Wagon ZTW
+18445
+Color
+Fort Knox Gold Clearcoat Metallic
+0
+Transmission
+Manual
+-815
+Brakes
+Standard
+0
+Side Impact Air Bags
+Yes
+50
+Moonroof
+No
+0

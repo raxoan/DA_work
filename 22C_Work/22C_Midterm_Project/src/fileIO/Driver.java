@@ -41,6 +41,11 @@ public class Driver {
 		System.out.println("\n" + friend2.getName() + "'s friends: " + friend2.getFriendsList());
 		
 		me.removeFriend(friend1);
+		
+		System.out.println("Searching for 'Clive'..." + bookFace.findUser("Clive"));
+		
+		bookFace.clear();
+		System.out.println("Is network clear? " + bookFace.isEmpty());
 	
 	}
 	

@@ -19,10 +19,6 @@ public class BuildAutoDriver {
 		String modelName = "Ford Wagon ZTW (All options)";
 		a1.buildAuto(fileName);
 		a1.printAuto(modelName);
-		a1.updateOptionSetName(modelName, "Color", "Apples"); // Changing OptionSet name "Color" to "Apples" 
-		a1.printAuto(modelName);
-		a1.updateOptionPrice(modelName, "Apples", "Fort Knox Gold Clearcoat Metallic", 100); // Changing price to $100
-		a1.printAuto(modelName);
 		
 	}
 

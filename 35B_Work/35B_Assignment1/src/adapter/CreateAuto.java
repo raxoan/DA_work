@@ -20,4 +20,12 @@ public interface CreateAuto {
 	 * @param modelName
 	 */
 	public void printAuto(String modelName);
+	
+	/**
+	 * This function allows the user to edit the name of an option, given the optionSet name and the old and new names they want to change
+	 * @param optionSetName
+	 * @param oldName
+	 * @param newName
+	 */
+	public void updateOptionName(String optionSetName, String oldName, String newName);
 }

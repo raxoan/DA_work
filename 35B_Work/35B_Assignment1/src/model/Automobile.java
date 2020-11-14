@@ -165,6 +165,12 @@ public class Automobile extends OptionSet implements Serializable {
 	public void setOptionPrice(OptionSet.Option opt, float price) {
 		opt.setPrice(price);
 	}
+	
+	public void changeOptionName(OptionSet.Option opt, String name) {
+		System.out.print("\n===The option of " + opt.getName() + " has been changed to ");
+		opt.setName(name);
+		System.out.print(name + "===\n\n");
+	}
 
 	public void setMake(String make) {
 		this.make = make;

@@ -65,7 +65,11 @@ public class Profile implements ProfileInterface {
 	 * @return a string(?) list of friends that this user has.
 	 */
 	public String getFriendsList() {
-		return displayList(friends);
+		if (friends.getLength() < 1) {
+			return name + " has no friends :(";
+		} else {
+			return displayList(friends);
+		}
 	}
 
 	////////////////////
@@ -100,7 +104,7 @@ public class Profile implements ProfileInterface {
 	public void removeFriend(Profile friend) {
 		if (friends.contains(friend)) {
 			friends.remove(friends.getPos(friend));
-			System.out.println(friend.getName() + " removed from" + name + "'s friends list.");
+			System.out.println(friend.getName() + " removed from " + name + "'s friends list.");
 		} else {
 			System.out.print("Friend not found");
 		}

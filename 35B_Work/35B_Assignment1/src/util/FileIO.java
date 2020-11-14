@@ -21,6 +21,7 @@ public class FileIO {
 	 * removing options that are not wanted
 	 */
 	public static Automobile buildAutoObject(String fileName) throws AutoExceptions, IOException {
+		System.out.println("BuildingAutoObject: " + fileName);
 		boolean check = false;
 		AutoFix fix = new AutoFix(fileName); 
 		Automobile auto = new Automobile();

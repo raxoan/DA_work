@@ -15,8 +15,6 @@ public class BinarySearchTree<T extends Comparable<? super T>> extends BinaryTre
 		setRootNode(new BinaryNode<>(rootEntry));
 	} // end constructor
 
-	
-
 	public void setRootNode(BinaryNode<T> binaryNode) {
 		// TODO Auto-generated method stub
 		super.setRootNode(binaryNode);
@@ -43,10 +41,78 @@ public class BinarySearchTree<T extends Comparable<? super T>> extends BinaryTre
 
 //...
 
-	private BinaryNode<T> removeEntry(Object rootNode, T entry, BinarySearchTree<T>.ReturnObject oldEntry) {
+	private BinaryNode<T> removeEntry(BinaryNode<T> rootNode, T entry, BinarySearchTree<T>.ReturnObject oldEntry) {
 		// TODO Auto-generated method stub
-		read through textbook 26.22
-		return null;
+		if (rootNode != null) {
+			T rootData = rootNode.getData();
+			int compare = entry.compareTo(rootData);
+			if (compare == 0) {
+				// entry == root entry
+				oldEntry.set(rootData);
+				rootNode = removeFromRoot(rootNode);
+			} else if (compare < 0) {
+				// entry < root entry
+				BinaryNode<T> leftChild = rootNode.getLeftChild();
+				BinaryNode<T> subtreeRoot = removeEntry(leftChild, entry, oldEntry);
+				rootNode.setLeftChild(subtreeRoot);
+			} else {
+				// entry > root entry
+				BinaryNode<T> rightChild = rootNode.getRightChild();
+				BinaryNode<T> subtreeRoot = removeEntry(rightChild, entry, oldEntry);
+				rootNode.setRightChild(subtreeRoot);
+			}
+		}
+		return rootNode;
+	}
+
+	/**
+	 * Removes an entry in a given root node of a subtree. 
+	 * @param rootNode	the rootNode of a given subtree
+	 * @return			BinaryNode<T>, which is the node being removed
+	 */
+	private BinaryNode<T> removeFromRoot(BinaryNode<T> rootNode) {
+		// TODO Auto-generated method stub
+		if (rootNode.hasLeftChild() && rootNode.hasRightChild()) {
+			// if rootNode has 2 children, find largest node in left subtree
+			BinaryNode<T> leftSubtreeRoot = rootNode.getLeftChild();
+			BinaryNode<T> largestNode = findLargest(leftSubtreeRoot);
+			// replace entry in root
+			rootNode.setData(largestNode.getData());
+			// remove the largest entry node in subtree
+			rootNode.setLeftChild(removeLargest(leftSubtreeRoot));
+		} else if (rootNode.hasRightChild()) {
+			// if rootNode only has a right child
+			rootNode = rootNode.getRightChild();
+		} else {
+			// if rootNode only has a left child
+			rootNode = rootNode.getLeftChild();
+		}
+		return rootNode;
+	}
+
+	/**
+	 * Removes the largest node in a given tree. Searches for the rightmost node in the subtrees based
+	 * off of a given rootNode
+	 * @param rootNode	the node to be removed
+	 * @return 			a BinaryNode<T>, which is the largest node in the subtree of rootNode
+	 */
+	private BinaryNode<T> removeLargest(BinaryNode<T> rootNode) {
+		if (rootNode.hasRightChild()) {
+			BinaryNode<T> rightChild = rootNode.getRightChild();
+			rightChild = removeLargest(rightChild);
+			rootNode.setRightChild(rightChild);
+		} else {
+			rootNode = rootNode.getLeftChild();
+		}
+		return rootNode;
+	}
+
+	private BinaryNode<T> findLargest(BinaryNode<T> rootNode) {
+		// look for right-most (largest) node in this subtree
+		if (rootNode.hasRightChild()) {
+			rootNode = findLargest(rootNode.getRightChild());
+		}
+		return rootNode;
 	}
 
 	public BinaryNode<T> getRootNode() {
